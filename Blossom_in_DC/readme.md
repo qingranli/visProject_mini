@@ -11,3 +11,7 @@ The __air and soil temperatures__ are downloaded for the Powder Mill station (ID
 [Powder Mill station](https://wcc.sc.egov.usda.gov/nwcc/site?sitenum=2049)
 
 The __Cherry blossom icon__ is downloaded from [emojipedia.org](https://emojipedia.org/twitter/twemoji-1.0/cherry-blossom/).
+
+
+## Display of output
+![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_2021_peak.png)
