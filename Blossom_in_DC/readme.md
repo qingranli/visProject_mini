@@ -18,4 +18,4 @@ The __Cherry blossom icon__ is downloaded from [emojipedia.org](https://emojiped
 
 regression model to predict soil temperature
 
-![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_polyReg3_result.png)
+![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_polyReg_result.png)
