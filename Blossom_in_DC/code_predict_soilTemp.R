@@ -2,7 +2,6 @@
 # daily sensor data 2002 to 2021
 
 getwd()
-setwd("./dataDir")
 
 library(data.table)
 library(tidyverse)
@@ -13,7 +12,7 @@ rm(list=ls())
 # dev.off()
 gc()
 
-soilDT = fread("Powder_Mill_soil_data.csv")
+soilDT = fread("./dataDir/Powder_Mill_soil_data.csv")
 glimpse(soilDT)
 summary(soilDT)
 
@@ -32,14 +31,13 @@ p0 <- ggplot(soilDT, aes(x = temp_air, y = temp_soil_20)) +
 p0
 
 # fitting a polynomial to the data (without CV) =====================
-model <- lm(temp_soil_20 ~ poly(temp_air, degree = 3), data = soilDT)
+model <- lm(temp_soil_20 ~ poly(temp_air, degree = 4, raw = T), data = soilDT)
 summary(model)
-coeff = round(model$coefficients,1)
-regEq = paste0("SoilTemp =",coeff[1],"+",coeff[2],"(x)",
-              "+",coeff[3],"(x2)","",coeff[4],"(x3), where x = AirTemp")
+coeff = round(model$coefficients,2)
+regEq = paste0("fitted poly(air temp, degree = 4)")
 print(regEq)
 # save model
-save(model,file = "model_poly3.RData")
+save(model,file = "model_poly4.RData")
 
 # prediction
 predictions <- model %>% predict(soilDT[,c("temp_air")])
@@ -49,7 +47,7 @@ p1 <- p0 + geom_line(aes(y = predictions), size = 1.4)+
   labs(subtitle = regEq)
 p1
 
-png('Rplot_polyReg3_result.png',width = 600,height = 400)
+png('Rplot_polyReg_result.png',width = 600,height = 400)
 p1
 dev.off()
 
@@ -76,7 +74,7 @@ for(k in 1:7){ # for degree k perform 5-fold CV
     train.dt <- dt[-trainID, ]
     test.dt <- dt[trainID, ]
     # polynomial regression on training data
-    model = lm(temp_soil_20 ~ poly(temp_air, degree = k), 
+    model = lm(temp_soil_20 ~ poly(temp_air, degree = k,raw = T), 
                data = train.dt)
     # compute RMSE on test data
     predictions <- model %>% predict(test.dt)
@@ -88,7 +86,7 @@ for(k in 1:7){ # for degree k perform 5-fold CV
 
 p2 <- ggplot(RMSE_save[-1,], aes(x=degree,y=RMSE))+
   geom_line(size = 1.4) + 
-  geom_label(aes(label = round(RMSE,3)))+
+  geom_label(aes(label = round(RMSE,4)))+
   scale_x_continuous(breaks = c(1:7)) +
   labs(title = "average RMSE (5-fold Cross-Validation)",
        subtitle = "soilTemp ~ poly(airTemp, degree = k)")+
@@ -105,7 +103,7 @@ set.seed(7412)
 train.control <- trainControl(method = "cv", number = 5)
 dt <- soilDT %>% select(temp_air,temp_soil_20)
 # Train the model (varying degree of polynomial)
-model_cv <- train(temp_soil_20 ~  poly(temp_air, degree = 3), 
+model_cv <- train(temp_soil_20 ~  poly(temp_air, degree = 4), 
                   data = dt, method = "lm",
                   trControl = train.control)
 # save results
