@@ -1,7 +1,6 @@
 # plot time series with end point as emoji
 
 getwd()
-# setwd("./dataDir")
 
 library(data.table)
 library(tidyverse)
@@ -11,9 +10,17 @@ library(ggimage)
 rm(list=ls())
 gc()
 
-peak <- fread("blossom_peak_date.csv")
-temp <- fread("DC_temp_Airport.csv")
+peak <- fread("./dataDir/blossom_peak_date.csv")
+temp <- fread("./dataDir/DC_temp_Airport.csv")
 
+# predict soil temperature using the model built ====================
+load("./dataDir/model_poly4.RData")
+temp_soil <- predict(model,air_temp = temp$TMID)
+
+
+
+
+# extract time series from a year ===================================
 pt_peak <- peak$peak_date[which(peak$Year == 2021)]
 
 dt_temp <- temp %>% select(DATE,TMID) %>% 
