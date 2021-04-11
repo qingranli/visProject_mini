@@ -10,6 +10,9 @@ The __air and soil temperatures__ are downloaded for the Powder Mill station (ID
 [Soil Climate Analysis Network (SCAN)](https://www.wcc.nrcs.usda.gov/scan/)  
 [Powder Mill station](https://wcc.sc.egov.usda.gov/nwcc/site?sitenum=2049)
 
+The __daily temperature records__ are downloaded from [NOAA Climate Data Online Data Tools](https://www.ncdc.noaa.gov/cdo-web/datatools).    Station ID = GHCND:USW00013743   
+Station Name = "WASHINGTON REAGAN NATIONAL AIRPORT, VA US"
+
 The __Cherry blossom icon__ is downloaded from [emojipedia.org](https://emojipedia.org/twitter/twemoji-1.0/cherry-blossom/).
 
 
@@ -17,7 +20,7 @@ The __Cherry blossom icon__ is downloaded from [emojipedia.org](https://emojiped
 ### blossom peak date vs. predicted soil temperature
 ![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_2021_peak.png)
 
-### animation the R plot
+### animation to the R plot
 ![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_animate_peak.gif)
 
 ### regression model to predict soil temperature
