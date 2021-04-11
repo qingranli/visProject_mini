@@ -31,34 +31,35 @@ dt_temp <- temp %>%
 
 # extract time series before peak_date ==============================
 dt <- merge(dt_temp,peak, by = "Year", all.x = TRUE)
-dt <- dt %>% filter(Date <= peak_date) %>% 
-  mutate(Year = factor(Year), 
-         day_num = difftime(Date,
-                            peak_date+(1-day_of_year), 
-                            units = "days"))
+dt <- dt %>% 
+  filter(Date <= peak_date) %>% 
+  mutate(day_num = as.numeric(difftime(Date,peak_date+(1-day_of_year),units = "days")))
 
-rm(peak,temp,model)
+rm(temp_soil,peak,temp,model)
 
-year_input = 2000
-p0 <- ggplot(dt %>% filter(Year == year_input), 
-             aes(x=day_num,y=temp_soil,group = Year)) + 
-  geom_path(color="mistyrose2", size = 2) + 
+year_input = c(2000:2021) # min = 1937
+dt.plot <- dt %>% filter(Year %in% year_input)
+p0 <- ggplot(dt.plot, aes(x=day_num,y=temp_soil,group=Year)) + 
+  geom_path(color="mistyrose2", size = 1.5) + 
   xlab("day of the year (1st Jan = 0)") + ylab("soil temperature (Celsius)") +
   scale_x_continuous(breaks = seq(0,133,10), limits = c(0,133)) +
-  theme_light() + theme(panel.grid = element_blank())
-p0
+  theme_light() + theme(panel.grid = element_blank()) +
+  geom_image(data = dt.plot %>% filter(Date == peak_date),
+             aes(x=day_num,y = temp_soil,
+                 image="./dataDir/cherry_blossom_icon.png"),
+             size = 0.05, asp = 1.9) + 
+  geom_text(data = dt.plot %>% filter(Date == peak_date), 
+            aes(x=day_num+12, y = temp_soil,
+                label = peak_date),
+            color = "indianred3",size = 5)
 
-# add icon as end point
-dt1 <- dt %>% filter(Year == year_input) %>% filter(Date == peak_date)
-p1 <- p0 + geom_image(aes(x=dt1$day_num,
-                          y = dt1$temp_soil,
-                          image="./dataDir/cherry_blossom_icon.png"),
-                          size = 0.05, asp = 1.9) + 
-  geom_text(aes(x=dt1$day_num+12, y = dt1$temp_soil,
-                label = dt1$peak_date),
-            color = "indianred3")
-p1
+# animate: transitioning between years
+p1 <-  p0 + transition_states(Year) + 
+  ggtitle("Year = {closest_state}") +
+  enter_appear() + exit_fade() + 
+  theme(plot.title = element_text(face = "bold"))
 
-png("Rplot_2021_peak.png",width = 8,height = 4.5,units = "in",res=100)
-p1
-dev.off()
+anim1 <- animate(p1, nframe = 170, width = 800, height = 450,
+                 end_pause = 30)
+anim_save("Rplot_animate_peak.gif", anim1)
+print("animation saved")
