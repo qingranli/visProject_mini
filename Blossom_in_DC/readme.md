@@ -14,12 +14,12 @@ The __Cherry blossom icon__ is downloaded from [emojipedia.org](https://emojiped
 
 
 ## Display of output
-# blossom peak date vs. predicted soil temperature
+### blossom peak date vs. predicted soil temperature
 ![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_2021_peak.png)
 
-# animation the R plot
+### animation the R plot
 ![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_animate_peak.gif)
 
-regression model to predict soil temperature
+### regression model to predict soil temperature
 
 ![alt text](https://github.com/qingranli/visProject_mini/blob/main/Blossom_in_DC/Rplot_polyReg_result.png)
